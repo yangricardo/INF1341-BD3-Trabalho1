@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.sql.Date;
 
 import model.Atleta;
 
@@ -32,7 +34,7 @@ public class AtletaDao {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()){
 				Atleta atleta = new Atleta(rs.getInt("codAtleta"), 
-						rs.getInt("cpf"), 
+						rs.getString("cpf"), 
 						rs.getString("nome"), 
 						rs.getString("sexo"),
 						rs.getString("dataNascimento"),
@@ -53,15 +55,22 @@ public class AtletaDao {
 		openConnection();
 		try {
 			PreparedStatement pstmt = connection.prepareStatement(
-					"INSERT INTO ATLETA (CPF,NOME,SEXO,DATANASCIMENTO,NACIONALIDE)"
-					+ "VALUES(?,?,?,?,?,)");
-			pstmt.setInt(1, atleta.getCpf());
+					"INSERT INTO ATLETA (CODATLETA,CPF,NOME,SEXO,DATANASCIMENTO,NACIONALIDADE)"
+					+ "VALUES(CODATLETA.NEXTVAL,?,?,?,?,?)");
+			pstmt.setString(1, atleta.getCpf());
 			pstmt.setString(2, atleta.getNome());
 			pstmt.setString(3, atleta.getSexo());
-			pstmt.setString(4, atleta.getDataNascimento());
+			Date sqlDTNSC = null;
+			try {
+				sqlDTNSC = new Date(utils.Util.stringParserDate(atleta.getDataNascimento()).getTime());
+			} catch (ParseException e) {
+				utils.Util.printError("Erro de conversao de datas", e);
+			}
+			pstmt.setDate(4, sqlDTNSC);
 			pstmt.setString(5, atleta.getNacionalidade());
 			pstmt.executeUpdate();
 			pstmt.close();
+			System.out.println("Atleta Cadastrado: "+atleta.getNome()+" "+atleta.getDataNascimento());
 		} catch (SQLException e) {
 			utils.Util.printError("Erro ao adicionar Atleta", e);
 		}		

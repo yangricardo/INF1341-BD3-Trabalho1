@@ -3,28 +3,30 @@ package utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Scanner;
 
 public class Util {
 
 	public static void printError(String msg,Exception e) {
-		System.err.println(msg);
-		System.err.println(" Message: "+e.getMessage());
-		System.err.println(" CAUSE: "+e.getCause());
+		System.err.println("==>"+msg+"\n"+e);
+		e.printStackTrace();
 	}
 	
 	public static String dateParserString(Date date){
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("DD/MM/YYYY");
 		return sdf.format(date);
 	}
 	
-	public static Date stringParserDate(String date){
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		try {
-			return sdf.parse(date);
-		} catch (ParseException e) {
-			printError("Erro ao gerar Date",e);
-			return null;
-		}
+	public static Date stringParserDate(String date) throws ParseException{
+		SimpleDateFormat sdf = new SimpleDateFormat("DD/MM/YYYY");
+		return sdf.parse(date);
+	}
+	
+	public static String readConsole(String message){
+		System.out.println(message);
+		@SuppressWarnings("resource")
+		Scanner s = new Scanner(System.in);
+		return s.nextLine();
 	}
 	
 }

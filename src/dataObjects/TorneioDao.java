@@ -23,17 +23,18 @@ public class TorneioDao {
 	}
 	
 	public static void createTorneio(Torneio torneio){
-		//não testado
+		//OK
 		openConnection();
 		try {
 			PreparedStatement pstmt = connection.prepareStatement(
-					"INSERT INTO TORNEIO (NOME, GRAUDIFICULDADE,STATUS)"
-					+"VALUES(?,?,?)");
+					"INSERT INTO TORNEIO (CODTORNEIO,NOME, GRAUDIFICULDADE,STATUS)"
+					+"VALUES(CODTORNEIO.NEXTVAL,?,?,?)");
 			pstmt.setString(1,torneio.getNome());
 			pstmt.setInt(2, torneio.getGrauDificuldade());
 			pstmt.setString(3, torneio.getStatus());
 			pstmt.executeUpdate();
 			pstmt.close();
+			System.out.println("Torneio Cadastrado");
 		} catch (SQLException e) {
 			utils.Util.printError("Erro ao criar Torneio", e);
 		}
@@ -69,6 +70,17 @@ public class TorneioDao {
 			pstmt.close();
 		} catch (SQLException e) {
 			utils.Util.printError("Erro ao remover torneio", e);
+		}
+		closeConnection();
+	}
+	
+	public static void getAllRelevantsTorneio(){
+		openConnection();
+		try {
+			PreparedStatement pstmt = connection.prepareStatement(
+					"SELECT * FROM TORNEIO WHERE STATUS = 'REALIZADO'");
+		} catch (SQLException e) {
+			utils.Util.printError("Erro ao recuperar torneios relevantes", e);
 		}
 		closeConnection();
 	}

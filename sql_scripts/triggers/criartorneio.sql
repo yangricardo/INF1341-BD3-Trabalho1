@@ -1,11 +1,4 @@
---------------------------------------------------------
---  Arquivo criado - Terça-feira-Abril-25-2017   
---------------------------------------------------------
---------------------------------------------------------
---  DDL for Trigger CRIARTORNEIO
---------------------------------------------------------
-
-  CREATE OR REPLACE TRIGGER "BD32017_1212206"."CRIARTORNEIO" 
+CREATE OR REPLACE TRIGGER CRIARTORNEIO 
 BEFORE INSERT ON TORNEIO
 FOR EACH ROW
 BEGIN
@@ -16,4 +9,4 @@ BEGIN
  END IF;
 END;
 /
-ALTER TRIGGER "BD32017_1212206"."CRIARTORNEIO" ENABLE;
+ALTER TRIGGER CRIARTORNEIO ENABLE;

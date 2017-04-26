@@ -1,11 +1,4 @@
---------------------------------------------------------
---  Arquivo criado - Terça-feira-Abril-25-2017   
---------------------------------------------------------
---------------------------------------------------------
---  DDL for Trigger CRIARMODALIDADE
---------------------------------------------------------
-
-  CREATE OR REPLACE TRIGGER "BD32017_1212206"."CRIARMODALIDADE" 
+CREATE OR REPLACE TRIGGER CRIARMODALIDADE 
 BEFORE INSERT ON MODALIDADE
 FOR EACH ROW
 BEGIN
@@ -16,4 +9,4 @@ BEGIN
  END IF;
 END;
 /
-ALTER TRIGGER "BD32017_1212206"."CRIARMODALIDADE" ENABLE;
+ALTER TRIGGER CRIARMODALIDADE ENABLE;

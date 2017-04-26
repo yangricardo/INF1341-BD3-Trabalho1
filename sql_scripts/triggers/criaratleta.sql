@@ -1,11 +1,4 @@
---------------------------------------------------------
---  Arquivo criado - Terça-feira-Abril-25-2017   
---------------------------------------------------------
---------------------------------------------------------
---  DDL for Trigger CRIARATLETA
---------------------------------------------------------
-
-  CREATE OR REPLACE TRIGGER "BD32017_1212206"."CRIARATLETA" 
+CREATE OR REPLACE TRIGGER CRIARATLETA
 BEFORE INSERT ON ATLETA
 FOR EACH ROW
 BEGIN
@@ -16,4 +9,4 @@ BEGIN
  END IF;
 END;
 /
-ALTER TRIGGER "BD32017_1212206"."CRIARATLETA" ENABLE;
+ALTER TRIGGER CRIARATLETA ENABLE;

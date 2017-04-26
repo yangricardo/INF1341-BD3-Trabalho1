@@ -1,11 +1,4 @@
---------------------------------------------------------
---  Arquivo criado - Terça-feira-Abril-25-2017   
---------------------------------------------------------
---------------------------------------------------------
---  DDL for Trigger CRIARSERIE
---------------------------------------------------------
-
-  CREATE OR REPLACE TRIGGER "BD32017_1212206"."CRIARSERIE" 
+CREATE OR REPLACE TRIGGER CRIARSERIE 
 BEFORE INSERT ON SERIE
 FOR EACH ROW
 BEGIN
@@ -16,4 +9,4 @@ BEGIN
  END IF;
 END;
 /
-ALTER TRIGGER "BD32017_1212206"."CRIARSERIE" ENABLE;
+ALTER TRIGGER CRIARSERIE ENABLE;

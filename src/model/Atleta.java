@@ -3,7 +3,7 @@ package model;
 public class Atleta {
 
 	private int codAtleta;
-	private int cpf;
+	private String cpf;
 	private String nome;
 	private String sexo;
 	private String dataNascimento;
@@ -12,7 +12,7 @@ public class Atleta {
 	public Atleta() {
 		super();
 	}
-	public Atleta(int cpf, String nome, String sexo, String dataNascimento, String nacionalidade) {
+	public Atleta(String cpf, String nome, String sexo, String dataNascimento, String nacionalidade) {
 		super();
 		this.cpf = cpf;
 		this.nome = nome;
@@ -20,7 +20,7 @@ public class Atleta {
 		this.dataNascimento = dataNascimento;
 		this.nacionalidade = nacionalidade;
 	}
-	public Atleta(int codAtleta, int cpf, String nome, String sexo, String dataNascimento, String nacionalidade) {
+	public Atleta(int codAtleta, String cpf, String nome, String sexo, String dataNascimento, String nacionalidade) {
 		super();
 		this.codAtleta = codAtleta;
 		this.cpf = cpf;
@@ -36,10 +36,10 @@ public class Atleta {
 	public void setCodAtleta(int codAtleta) {
 		this.codAtleta = codAtleta;
 	}
-	public int getCpf() {
+	public String getCpf() {
 		return cpf;
 	}
-	public void setCpf(int cpf) {
+	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 	
