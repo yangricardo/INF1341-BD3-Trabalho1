@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import model.Modalidade;
-import model.Torneio;
-
 public class ModalidadeDao {
 	private static Connection connection;
 	private static void openConnection() {
@@ -24,7 +22,6 @@ public class ModalidadeDao {
 	}
 	
 	public static void createModalidade(Modalidade modalidade){
-		//não testado
 		openConnection();
 		try {
 			PreparedStatement pstmt = connection.prepareStatement(
@@ -42,7 +39,6 @@ public class ModalidadeDao {
 	}
 	
 	public static ArrayList<Modalidade> getAllModalidades(){
-		//Não testado ainda
 		ArrayList<Modalidade> modalidades = new ArrayList<Modalidade>();
 		openConnection();
 		try {
@@ -64,14 +60,13 @@ public class ModalidadeDao {
 	}
 	
 	public static ArrayList<Modalidade> getAllModalidadesFemininas(){
-		//Não testado ainda
 		ArrayList<Modalidade> modalidades = new ArrayList<Modalidade>();
 		openConnection();
 		try {
 			PreparedStatement pstmt = connection.prepareStatement(
 					"SELECT * FROM MODALIDADE"
-					+ "WHERE SEXO = 'FEMININO'"
-					+ "OR SEXO = 'AMBOS'");
+					+ " WHERE SEXO = 'FEMININO' "
+					+ " OR SEXO = 'AMBOS'");
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()){
 				Modalidade mod = new Modalidade(rs.getInt("CODMODALIDADE"),
@@ -88,14 +83,13 @@ public class ModalidadeDao {
 	}
 	
 	public static ArrayList<Modalidade> getAllModalidadesMasculinas(){
-		//Não testado ainda
 		ArrayList<Modalidade> modalidades = new ArrayList<Modalidade>();
 		openConnection();
 		try {
 			PreparedStatement pstmt = connection.prepareStatement(
 					"SELECT * FROM MODALIDADE"
-					+ "WHERE SEXO = 'MASCULINO'"
-					+ "OR SEXO = 'AMBOS'");
+					+ " WHERE SEXO = 'MASCULINO' "
+					+ " OR SEXO = 'AMBOS'");
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()){
 				Modalidade mod = new Modalidade(rs.getInt("CODMODALIDADE"),

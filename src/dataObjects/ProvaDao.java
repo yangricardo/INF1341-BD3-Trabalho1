@@ -28,8 +28,25 @@ public class ProvaDao {
 		openConnection();
 		try {
 			PreparedStatement pstmt = connection.prepareStatement(
-					"INSERT INTO PROVA (codTorneio,codModalidade)"
-					+ "VALUES(?,?)");
+					"INSERT INTO PROVA (codTorneio,codModalidade,sexo)"
+					+ "VALUES(?,?,?)");
+			pstmt.setInt(1, prova.getCodTorneio());
+			pstmt.setInt(2, prova.getCodModalidade());
+			pstmt.setString(3, prova.getSexo());
+			pstmt.executeUpdate();
+			pstmt.close();
+			System.out.println("Prova Cadastrada");
+		} catch (SQLException e) {
+			utils.Util.printError("Erro ao criar Prova", e);
+		}		
+		closeConnection();
+	}
+	
+	public static void deleteProva(Prova prova){
+		openConnection();
+		try {
+			PreparedStatement pstmt = connection.prepareStatement(
+					"DELETE FROM PROVA WHERE CODTORNEIO = ? AND CODMODALIDADE = ? ");
 			pstmt.setInt(1, prova.getCodTorneio());
 			pstmt.setInt(2, prova.getCodModalidade());
 			pstmt.executeUpdate();
@@ -39,6 +56,7 @@ public class ProvaDao {
 		}		
 		closeConnection();
 	}
+	
 	
 	public static void getAllProvaTorneio(int codTorneio){
 		//não testado

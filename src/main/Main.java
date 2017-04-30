@@ -3,12 +3,15 @@ package main;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.StringTokenizer;
 
 import dataObjects.AtletaDao;
 import dataObjects.ModalidadeDao;
+import dataObjects.ProvaDao;
 import dataObjects.TorneioDao;
 import model.Atleta;
 import model.Modalidade;
+import model.Prova;
 import model.Torneio;
 
 public class Main {
@@ -22,8 +25,8 @@ public class Main {
 		System.out.println("Criacao de Novo Torneio");
 		
 		do{
-			line = utils.Util.readConsole("Digite o Nome do Torneio:"); 
-		}while(line.length()>25);
+			line = utils.Util.readConsole("Digite o Nome do Torneio (maximo 50 caracteres):"); 
+		}while(line.length()>50);
 		nome = line;
 		
 		do{
@@ -43,8 +46,8 @@ public class Main {
 		System.out.println("Criacao de Novo Torneio Relevante");
 		
 		do{
-			line = utils.Util.readConsole("Digite o Nome do Torneio:"); 
-		}while(line.length()>25);
+			line = utils.Util.readConsole("Digite o Nome do Torneio (maximo 50 caracteres):"); 
+		}while(line.length()>50);
 		nome = line;
 		
 		do{
@@ -140,15 +143,47 @@ public class Main {
 	}
 
 	public static void createProva(){
+		String line;
+		int codTorneio = 0;
+		int codModalidade = 0;
+		String sexo = "";
+		System.out.println("CRIAR PROVA");
 		
+		System.out.println("Torneios 'EM EXECUCAO'");
+		ArrayList<Torneio> torneios = TorneioDao.getAllRunningTorneio();
+		for(Torneio t : torneios){
+			System.out.println(t.getCodTorneio()+" - "+t.getNome());
+		}
+		do{
+			line = utils.Util.readConsole("Digite o Codigo do Torneio em execucao que a prova pertence:");
+		}while(!line.matches("^[1-9][0-9]*$"));
+		codTorneio = Integer.parseInt(line);
+		
+		do{
+			line = utils.Util.readConsole("Digite '1' para MASCULINO e '2' para FEMININO para definir o sexo da prova");
+		}while( !(line.equals("1") || line.equals("2")) );
+		sexo = (line.equals("1")?"MASCULINO":"FEMININO");
+		
+		System.out.println("Modalidades Disponiveis");
+		ArrayList<Modalidade> modalidades;
+		if(sexo.equals("MASCULINO"))
+			modalidades = ModalidadeDao.getAllModalidadesMasculinas();
+		else modalidades = ModalidadeDao.getAllModalidadesFemininas();
+		for(Modalidade m : modalidades){
+			System.out.println(m.getCodModalidade()+" - "+m.getNome());
+		}
+		do{
+			line = utils.Util.readConsole("Digite o Codigo da Modalidade em execucao que a prova pertence:");
+		}while(!line.matches("^[1-9][0-9]*$"));
+		codModalidade = Integer.parseInt(line);
+		
+		Prova prova = new Prova(codTorneio, codModalidade, sexo);
+		ProvaDao.createProva(prova);
 	}
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.println("teste");
-		ArrayList<Modalidade> modalidades = ModalidadeDao.getAllModalidadesMasculinas();
-		System.out.println("teste");
-		modalidades.forEach(modalidade -> System.out.println(modalidade.getCodModalidade()+" "+modalidade.getNome()+" "+modalidade.getSexo()));
+		createProva();
 	}
 
 }
