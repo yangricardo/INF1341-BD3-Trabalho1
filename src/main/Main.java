@@ -3,15 +3,16 @@ package main;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.StringTokenizer;
-
 import dataObjects.AtletaDao;
 import dataObjects.ModalidadeDao;
 import dataObjects.ProvaDao;
+import dataObjects.SerieDao;
 import dataObjects.TorneioDao;
 import model.Atleta;
 import model.Modalidade;
 import model.Prova;
+import model.ProvaModalidade;
+import model.Serie;
 import model.Torneio;
 
 public class Main {
@@ -108,10 +109,10 @@ public class Main {
 		Date dtnsc = null;
 		do{
 			try {
-				line = utils.Util.readConsole("Digite a data de nascimento(DD/MM/YYYY): ");
+				line = utils.Util.readConsole("Digite a data de nascimento(dd/MM/yyyy): ");
 				dtnsc = utils.Util.stringParserDate(line);	
 			} catch (ParseException e) {
-				utils.Util.printError("Formato irregular da data (DD/MM/YYYY)", e);
+				utils.Util.printError("Formato irregular da data (dd/MM/yyyy)", e);
 			}
 		}while(dtnsc == null);
 		dataNascimento = utils.Util.dateParserString(dtnsc);
@@ -151,6 +152,7 @@ public class Main {
 		
 		System.out.println("Torneios 'EM EXECUCAO'");
 		ArrayList<Torneio> torneios = TorneioDao.getAllRunningTorneio();
+		System.out.println("CODTORNEIO - NOME TORNEIO");
 		for(Torneio t : torneios){
 			System.out.println(t.getCodTorneio()+" - "+t.getNome());
 		}
@@ -181,9 +183,74 @@ public class Main {
 		ProvaDao.createProva(prova);
 	}
 	
+	public static void createSerie(){
+		String line;
+		int codProva = 0;
+		int codTorneio = 0;
+		String etapa = "";
+		String data = "";
+		String hora = "";
+		String status = "PREVISTA";
+		
+		System.out.println("Criar Serie");
+		
+		System.out.println("Torneios 'EM EXECUCAO'");
+		ArrayList<Torneio> torneios = TorneioDao.getAllRunningTorneio();
+		System.out.println("CODTORNEIO - NOME TORNEIO");
+		for(Torneio t : torneios){
+			System.out.println(t.getCodTorneio()+" - "+t.getNome());
+		}
+		do{
+			line = utils.Util.readConsole("Digite o Codigo do Torneio em execucao que a prova pertence:");
+		}while(!line.matches("^[1-9][0-9]*$"));
+		codTorneio = Integer.parseInt(line);
+		
+		System.out.println("Provas cadastradas para o torneio");
+		ArrayList<ProvaModalidade> provas = ProvaDao.getAllProvaTorneio(codTorneio);
+		System.out.println("CODPROVA - CODMODALIDADE - DESCRICAO - SEXO");
+		for(ProvaModalidade p : provas){
+			System.out.println(p.getCodProva()+" - "+p.getCodModalidade()+" - "+p.getNome()+" - "+p.getSexo());
+		}
+		do{
+			line = utils.Util.readConsole("Digite o Codigo da prova cuja serie será criada:");
+		}while(!line.matches("^[1-9][0-9]*$"));
+		codProva = Integer.parseInt(line);
+		
+		do{
+			line = utils.Util.readConsole("Digite '1' para Etapa Eliminatoria, '2' para Etapa Semi-Final e '3' para Etapa Final:");
+		}while(!(line.equals("1") || line.equals("2") || line.equals("3")));
+		etapa = (line.equals("1")?"ELIMINATORIA":(line.equals("2")?"SEMIFINAL":"FINAL"));
+		
+		Date dt = null;
+		do{
+			try {
+				line = utils.Util.readConsole("Digite a data da serie (dd/MM/yyyy)");
+				dt = utils.Util.stringParserDate(line);
+			} catch (ParseException e) {
+				utils.Util.printError("Formato irregular da data (dd/MM/yyyy)", e);
+			}
+		}while(dt==null);
+		data = utils.Util.dateParserString(dt);
+		
+		dt = null;
+		do{
+			try {
+				line = utils.Util.readConsole("Digite o horario da serie (HH:mm) (0 as 23 horas):");
+				dt = utils.Util.stringParserHour(line);
+			} catch (ParseException e) {
+				utils.Util.printError("Formato irregular da data (HH:mm)", e);
+			}
+		}while(dt==null);
+		hora = utils.Util.hourParserString(dt);
+		
+		Serie serie = new Serie(codProva, etapa, data,hora, status);
+		SerieDao.createSerie(serie);
+		
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		createProva();
+		createSerie();
 	}
 
 }

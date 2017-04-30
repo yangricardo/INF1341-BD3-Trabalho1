@@ -28,12 +28,13 @@ public class SerieDao {
 		openConnection();
 		try {
 			PreparedStatement pstmt = connection.prepareStatement(
-					"INSERT INTO SERIE(CODPROVA,ETAPA,DATAREALIZACAO,STATUS)"
-					+ "VALUES (?,?,?,?,)");
+					"INSERT INTO SERIE(CODPROVA,ETAPA,DATA,HORA,STATUS)"
+					+ "VALUES (?,?,?,?,?)");
 			pstmt.setInt(1, serie.getCodProva());
 			pstmt.setString(2, serie.getEtapa());
-			pstmt.setString(3, serie.getDataRealizacao());
-			pstmt.setString(4, serie.getStatus());
+			pstmt.setString(3, serie.getData());
+			pstmt.setString(4, serie.getHora());
+			pstmt.setString(5, serie.getStatus());
 			pstmt.executeUpdate();
 			pstmt.close();			
 		} catch (SQLException e) {
@@ -52,9 +53,8 @@ public class SerieDao {
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()){
 				Serie serie = new Serie(rs.getInt("codSerie"), 
-						rs.getInt("codProva"), 
-						rs.getString("etapa"),
-						rs.getString("dataRealizacao"), 
+						rs.getInt("codProva"), rs.getString("etapa"),
+						rs.getString("data"), rs.getString("hora"), 
 						rs.getString("status"));
 				series.add(serie);
 			}

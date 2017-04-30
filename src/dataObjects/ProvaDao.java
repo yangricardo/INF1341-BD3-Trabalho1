@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import model.Prova;
+import model.ProvaModalidade;
 
 public class ProvaDao {
 	
@@ -58,19 +59,19 @@ public class ProvaDao {
 	}
 	
 	
-	public static void getAllProvaTorneio(int codTorneio){
+	public static ArrayList<ProvaModalidade> getAllProvaTorneio(int codTorneio){
 		//não testado
-		ArrayList<Prova> provas = new ArrayList<Prova>();
+		ArrayList<ProvaModalidade> provas = new ArrayList<ProvaModalidade>();
 		openConnection();
 		try {
 			PreparedStatement pstmt = connection.prepareStatement(
-					"SELECT * FROM PROVA WHERE CODTORNEIO = ?");
+					"SELECT * FROM PROVAMODALIDADE WHERE CODTORNEIO = ?");
 			pstmt.setInt(1, codTorneio);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()){
-				Prova prova = new Prova(rs.getInt("codProva"), 
-						rs.getInt("codTorneio"), 
-						rs.getInt("codModalidade"));
+				ProvaModalidade prova = new ProvaModalidade(rs.getInt("codProva"),
+						rs.getInt("codTorneio"), rs.getInt("codModalidade"), 
+						rs.getString("nome"), rs.getString("sexo"));
 				provas.add(prova);
 			}
 			pstmt.close();
@@ -78,6 +79,7 @@ public class ProvaDao {
 			utils.Util.printError("Erro ao recuperar Prova", e);
 		}		
 		closeConnection();
+		return provas;
 	}
 	
 	

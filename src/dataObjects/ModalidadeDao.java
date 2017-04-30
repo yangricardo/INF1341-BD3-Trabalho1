@@ -38,6 +38,25 @@ public class ModalidadeDao {
 		closeConnection();
 	}
 	
+	public static Modalidade getModalidade(int codModalidade){
+		Modalidade modalidade = null;
+		openConnection();
+		try {
+			PreparedStatement pstmt = connection.prepareStatement(
+					"SELECT * FROM MODALIDADE WHERE CODMODALIDADE = ?");
+			pstmt.setInt(1, codModalidade);
+			ResultSet rs = pstmt.executeQuery();
+			modalidade = new Modalidade(rs.getInt("codModalidade"), rs.getString("nome"), rs.getString("sexo"));
+			pstmt.close();			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			modalidade = null;
+		}		
+		closeConnection();		
+		return modalidade;
+	}
+	
 	public static ArrayList<Modalidade> getAllModalidades(){
 		ArrayList<Modalidade> modalidades = new ArrayList<Modalidade>();
 		openConnection();

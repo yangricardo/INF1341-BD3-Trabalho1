@@ -32,7 +32,8 @@ CREATE TABLE Serie(
     codSerie NUMBER NOT NULL,
     codProva NUMBER NOT NULL,
     etapa VARCHAR2(13) NOT NULL,
-    dataRealizacao DATE NOT NULL,
+    data VARCHAR2(10) NOT NULL,
+    hora VARCHAR2(5) NOT NULL,
     status VARCHAR2(10) NOT NULL
 );
 ALTER TABLE Serie ADD CONSTRAINT PKSERIE PRIMARY KEY (codSerie);
@@ -45,7 +46,7 @@ CREATE TABLE Atleta (
     cpf NUMBER NOT NULL,
     nome VARCHAR2(50) NOT NULL,
     sexo VARCHAR2(9) NOT NULL,
-    dataNascimento DATE NOT NULL ,
+    dataNascimento VARCHAR2 NOT NULL ,
     nacionalidade VARCHAR2(10) NOT NULL    
 );
 ALTER TABLE Atleta ADD CONSTRAINT PKATLETA PRIMARY KEY (codAtleta);
@@ -55,6 +56,7 @@ CREATE TABLE SerieClassificacao(
     codSerie NUMBER NOT NULL,
     codAtleta NUMBER NOT NULL,
     marca NUMBER(3,5),
+    raiaParticipacao NUMBER,
     colocacao NUMBER,
     statusClassificacaoAtleta VARCHAR2(15) 
 );

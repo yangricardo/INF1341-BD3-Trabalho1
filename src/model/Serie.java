@@ -5,21 +5,24 @@ public class Serie {
 	private int codSerie;
 	private int codProva;
 	private String etapa;
-	private String dataRealizacao;
+	private String data;
 	private String status;
-	public Serie(int codSerie, int codProva, String etapa, String dataRealizacao, String status) {
+	private String hora;
+	public Serie(int codSerie, int codProva, String etapa, String data,String hora, String status) {
 		super();
 		this.codSerie = codSerie;
 		this.codProva = codProva;
 		this.etapa = etapa;
-		this.dataRealizacao = dataRealizacao;
+		this.data = data;
+		this.setHora(hora);
 		this.status = status;
 	}
-	public Serie(int codProva, String etapa, String dataRealizacao, String status) {
+	public Serie(int codProva, String etapa, String data,String hora, String status) {
 		super();
 		this.codProva = codProva;
 		this.etapa = etapa;
-		this.dataRealizacao = dataRealizacao;
+		this.data = data;
+		this.setHora(hora);
 		this.status = status;
 	}
 	public int getCodSerie() {
@@ -40,11 +43,17 @@ public class Serie {
 	public void setEtapa(String etapa) {
 		this.etapa = etapa;
 	}
-	public String getDataRealizacao() {
-		return dataRealizacao;
+	public String getData() {
+		return data;
 	}
-	public void setDataRealizacao(String dataRealizacao) {
-		this.dataRealizacao = dataRealizacao;
+	public void setData(String data) {
+		this.data = data;
+	}
+	public String getHora() {
+		return hora;
+	}
+	public void setHora(String hora) {
+		this.hora = hora;
 	}
 	public String getStatus() {
 		return status;
@@ -52,7 +61,6 @@ public class Serie {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
 	
 	
 }
