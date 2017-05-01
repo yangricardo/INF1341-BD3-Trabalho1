@@ -28,6 +28,7 @@ public class TorneioDao {
 		//OK
 		openConnection();
 		try {
+			connection.setAutoCommit(false);
 			PreparedStatement pstmt = connection.prepareStatement(
 					"INSERT INTO TORNEIO (CODTORNEIO,NOME, GRAUDIFICULDADE,STATUS)"
 					+"VALUES(CODTORNEIO.NEXTVAL,?,?,?)");
@@ -35,6 +36,8 @@ public class TorneioDao {
 			pstmt.setInt(2, torneio.getGrauDificuldade());
 			pstmt.setString(3, torneio.getStatus());
 			pstmt.executeUpdate();
+			connection.commit();
+			connection.setAutoCommit(true);
 			pstmt.close();
 			System.out.println("Torneio Cadastrado");
 		} catch (SQLException e) {
@@ -47,6 +50,7 @@ public class TorneioDao {
 		//não testado
 		openConnection();
 		try {
+			connection.setAutoCommit(false);
 			PreparedStatement pstmt = connection.prepareStatement(
 					"UPDATE TORNEIO SET NOME = ?, GRAUDIFICULDADE = ?, STATUS = ? "
 					+ "WHERE CODTORNEIO = ?");
@@ -54,6 +58,8 @@ public class TorneioDao {
 			pstmt.setInt(2, torneio.getGrauDificuldade());
 			pstmt.setString(3, torneio.getStatus());
 			pstmt.executeUpdate();
+			connection.commit();
+			connection.setAutoCommit(true);
 			pstmt.close();
 		} catch (SQLException e) {
 			utils.Util.printError("Erro ao atualizar torneio", e);
@@ -65,10 +71,13 @@ public class TorneioDao {
 		//não testado
 		openConnection();
 		try {
+			connection.setAutoCommit(false);
 			PreparedStatement pstmt = connection.prepareStatement(
 					"DELETE FROM TORNEIO WHERE CODTORNEIO = ?");
 			pstmt.setInt(1, codTorneio);
 			pstmt.executeUpdate();
+			connection.commit();
+			connection.setAutoCommit(true);
 			pstmt.close();
 		} catch (SQLException e) {
 			utils.Util.printError("Erro ao remover torneio", e);

@@ -52,6 +52,7 @@ public class AtletaDao {
 		//não testado
 		openConnection();
 		try {
+			connection.setAutoCommit(false);
 			PreparedStatement pstmt = connection.prepareStatement(
 					"INSERT INTO ATLETA (CODATLETA,CPF,NOME,SEXO,DATANASCIMENTO,NACIONALIDADE)"
 					+ "VALUES(CODATLETA.NEXTVAL,?,?,?,?,?)");
@@ -61,6 +62,8 @@ public class AtletaDao {
 			pstmt.setString(4, atleta.getDataNascimento());
 			pstmt.setString(5, atleta.getNacionalidade());
 			pstmt.executeUpdate();
+			connection.commit();
+			connection.setAutoCommit(true);
 			pstmt.close();
 			System.out.println("Atleta Cadastrado: "+atleta.getNome()+" "+atleta.getDataNascimento());
 		} catch (SQLException e) {

@@ -24,12 +24,15 @@ public class ModalidadeDao {
 	public static void createModalidade(Modalidade modalidade){
 		openConnection();
 		try {
+			connection.setAutoCommit(false);
 			PreparedStatement pstmt = connection.prepareStatement(
 					"INSERT INTO MODALIDADE (CODMODALIDADE,NOME, SEXO)"
 					+"VALUES(CODMODALIDADE.NEXTVAL,?,?)");
 			pstmt.setString(1, modalidade.getNome());
 			pstmt.setString(2, modalidade.getSexo());
 			pstmt.executeUpdate();
+			connection.commit();
+			connection.setAutoCommit(true);
 			pstmt.close();
 			System.out.println("Modalidade Cadastrada");
 		} catch (SQLException e) {

@@ -27,6 +27,7 @@ public class SerieDao {
 		//não testado
 		openConnection();
 		try {
+			connection.setAutoCommit(false);
 			PreparedStatement pstmt = connection.prepareStatement(
 					"INSERT INTO SERIE(CODPROVA,ETAPA,DATA,HORA,STATUS)"
 					+ "VALUES (?,?,?,?,?)");
@@ -36,6 +37,8 @@ public class SerieDao {
 			pstmt.setString(4, serie.getHora());
 			pstmt.setString(5, serie.getStatus());
 			pstmt.executeUpdate();
+			connection.commit();
+			connection.setAutoCommit(true);
 			pstmt.close();			
 		} catch (SQLException e) {
 			utils.Util.printError("Erro ao adicionar Serie", e);

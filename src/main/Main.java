@@ -126,23 +126,6 @@ public class Main {
 		AtletaDao.createAtleta(atleta);		
 	}
 	
-	public static void exemplo() {
-		String line = "";
-		while (!line.equals("sair")) {
-			line = utils.Util.readConsole("Digite a data de nascimento(DD/MM/YYYY): ");
-			if (line.equals("sair"))
-				break;
-			Date date = null;
-			try {
-				date = utils.Util.stringParserDate(line);
-				System.out.println(utils.Util.dateParserString(date));
-			} catch (ParseException e) {
-				utils.Util.printError("Formato irregular da data (DD/MM/YYYY)", e);
-				continue;
-			}
-		}
-	}
-
 	public static void createProva(){
 		String line;
 		int codTorneio = 0;
@@ -250,7 +233,9 @@ public class Main {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		createSerie();
+		
+		
+		
 	}
 
 }

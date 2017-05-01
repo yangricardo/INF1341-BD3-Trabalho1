@@ -28,6 +28,7 @@ public class ProvaDao {
 		//não testado
 		openConnection();
 		try {
+			connection.setAutoCommit(false);
 			PreparedStatement pstmt = connection.prepareStatement(
 					"INSERT INTO PROVA (codTorneio,codModalidade,sexo)"
 					+ "VALUES(?,?,?)");
@@ -35,6 +36,8 @@ public class ProvaDao {
 			pstmt.setInt(2, prova.getCodModalidade());
 			pstmt.setString(3, prova.getSexo());
 			pstmt.executeUpdate();
+			connection.commit();
+			connection.setAutoCommit(true);
 			pstmt.close();
 			System.out.println("Prova Cadastrada");
 		} catch (SQLException e) {
@@ -46,11 +49,14 @@ public class ProvaDao {
 	public static void deleteProva(Prova prova){
 		openConnection();
 		try {
+			connection.setAutoCommit(false);
 			PreparedStatement pstmt = connection.prepareStatement(
 					"DELETE FROM PROVA WHERE CODTORNEIO = ? AND CODMODALIDADE = ? ");
 			pstmt.setInt(1, prova.getCodTorneio());
 			pstmt.setInt(2, prova.getCodModalidade());
 			pstmt.executeUpdate();
+			connection.commit();
+			connection.setAutoCommit(true);
 			pstmt.close();
 		} catch (SQLException e) {
 			utils.Util.printError("Erro ao criar Prova", e);
