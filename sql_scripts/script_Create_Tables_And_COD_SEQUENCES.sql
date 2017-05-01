@@ -46,7 +46,7 @@ CREATE TABLE Atleta (
     cpf NUMBER NOT NULL,
     nome VARCHAR2(50) NOT NULL,
     sexo VARCHAR2(9) NOT NULL,
-    dataNascimento VARCHAR2 NOT NULL ,
+    dataNascimento VARCHAR2(10) NOT NULL ,
     nacionalidade VARCHAR2(10) NOT NULL    
 );
 ALTER TABLE Atleta ADD CONSTRAINT PKATLETA PRIMARY KEY (codAtleta);
