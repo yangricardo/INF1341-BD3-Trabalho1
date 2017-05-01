@@ -55,7 +55,7 @@ CREATE SEQUENCE codAtleta MINVALUE 1 INCREMENT BY 1 START WITH 1;
 CREATE TABLE SerieClassificacao(
     codSerie NUMBER NOT NULL,
     codAtleta NUMBER NOT NULL,
-    marca NUMBER(3,5),
+    marca FLOAT,
     raiaParticipacao NUMBER,
     colocacao NUMBER,
     statusClassificacaoAtleta NVARCHAR2(15) 
@@ -69,9 +69,9 @@ CREATE TABLE AtletaHistorico(
     codAtleta NUMBER NOT NULL,
     codTorneio NUMBER NOT NULL,
     codModalidade NUMBER NOT NULL,
-    marca NUMBER(3,5) NOT NULL,
+    marca FLOAT NOT NULL,
     colocacao NUMBER NOT NULL,
-    nota NUMBER(3,5) NULL
+    nota FLOAT NULL
 );
 ALTER TABLE AtletaHistorico ADD CONSTRAINT FKATLETAHISTORICO_ATLETA 
     FOREIGN KEY (codAtleta) REFERENCES Atleta (codAtleta);

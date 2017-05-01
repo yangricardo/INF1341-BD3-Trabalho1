@@ -3,12 +3,9 @@ package main;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import dataObjects.AtletaDao;
-import dataObjects.ModalidadeDao;
-import dataObjects.ProvaDao;
-import dataObjects.SerieDao;
-import dataObjects.TorneioDao;
+import dataObjects.Dao;
 import model.Atleta;
+import model.AtletaHistorico;
 import model.Modalidade;
 import model.Prova;
 import model.ProvaModalidade;
@@ -36,7 +33,7 @@ public class Main {
 		}while(grauDificuldade < 1 || grauDificuldade > 10);
 		grauDificuldade = Integer.parseInt(line);
 		Torneio torneio = new Torneio(nome, grauDificuldade, status);
-		TorneioDao.createTorneio(torneio);
+		Dao.createTorneio(torneio);
 	}
 
 	public static void createRelevantTorneio() {
@@ -58,7 +55,7 @@ public class Main {
 		grauDificuldade = Integer.parseInt(line);
 		
 		Torneio torneio = new Torneio(nome, grauDificuldade, status);
-		TorneioDao.createTorneio(torneio);
+		Dao.createTorneio(torneio);
 	}
 
 	public static void createModalidade() {
@@ -78,7 +75,7 @@ public class Main {
 		sexo = (line.equals("1")?"AMBOS":(line.equals("2")?"MASCULINO":"FEMININO"));
 		
 		Modalidade modalidade = new Modalidade(nome, sexo);
-		ModalidadeDao.createModalidade(modalidade);
+		Dao.createModalidade(modalidade);
 	}
 
 	public static void createAtleta(){
@@ -122,8 +119,24 @@ public class Main {
 		}while( !(line.equals("1") || line.equals("2")) );
 		sexo = (line.equals("1")?"MASCULINO":"FEMININO");
 		
+		ArrayList<AtletaHistorico> ahs = new ArrayList<AtletaHistorico>();
+		String opt;
+		do{
+			do{
+				line = utils.Util.readConsole("Deseja cadastrar uma marca? (S/N)");
+			}while(!(line.equalsIgnoreCase("S") || line.equalsIgnoreCase("N")));
+			opt = line;
+			
+			if(opt.equals("S")){
+				AtletaHistorico ah = insertMarcaAtletaHistorico(sexo);
+				ahs.add(ah);
+			}
+			
+		}while(!opt.equalsIgnoreCase("N"));
+		
+		
 		Atleta atleta = new Atleta(cpf, nome, sexo, dataNascimento, nacionalidade);
-		AtletaDao.createAtleta(atleta);		
+		Dao.createAtleta(atleta,ahs);		
 	}
 	
 	public static void createProva(){
@@ -134,7 +147,7 @@ public class Main {
 		System.out.println("CRIAR PROVA");
 		
 		System.out.println("Torneios 'EM EXECUCAO'");
-		ArrayList<Torneio> torneios = TorneioDao.getAllRunningTorneio();
+		ArrayList<Torneio> torneios = Dao.getAllRunningTorneio();
 		System.out.println("CODTORNEIO - NOME TORNEIO");
 		for(Torneio t : torneios){
 			System.out.println(t.getCodTorneio()+" - "+t.getNome());
@@ -152,8 +165,8 @@ public class Main {
 		System.out.println("Modalidades Disponiveis");
 		ArrayList<Modalidade> modalidades;
 		if(sexo.equals("MASCULINO"))
-			modalidades = ModalidadeDao.getAllModalidadesMasculinas();
-		else modalidades = ModalidadeDao.getAllModalidadesFemininas();
+			modalidades = Dao.getAllModalidadesMasculinas();
+		else modalidades = Dao.getAllModalidadesFemininas();
 		for(Modalidade m : modalidades){
 			System.out.println(m.getCodModalidade()+" - "+m.getNome());
 		}
@@ -163,7 +176,7 @@ public class Main {
 		codModalidade = Integer.parseInt(line);
 		
 		Prova prova = new Prova(codTorneio, codModalidade, sexo);
-		ProvaDao.createProva(prova);
+		Dao.createProva(prova);
 	}
 	
 	public static void createSerie(){
@@ -178,7 +191,7 @@ public class Main {
 		System.out.println("Criar Serie");
 		
 		System.out.println("Torneios 'EM EXECUCAO'");
-		ArrayList<Torneio> torneios = TorneioDao.getAllRunningTorneio();
+		ArrayList<Torneio> torneios = Dao.getAllRunningTorneio();
 		System.out.println("CODTORNEIO - NOME TORNEIO");
 		for(Torneio t : torneios){
 			System.out.println(t.getCodTorneio()+" - "+t.getNome());
@@ -189,7 +202,7 @@ public class Main {
 		codTorneio = Integer.parseInt(line);
 		
 		System.out.println("Provas cadastradas para o torneio");
-		ArrayList<ProvaModalidade> provas = ProvaDao.getAllProvaTorneio(codTorneio);
+		ArrayList<ProvaModalidade> provas = Dao.getAllProvaTorneio(codTorneio);
 		System.out.println("CODPROVA - CODMODALIDADE - DESCRICAO - SEXO");
 		for(ProvaModalidade p : provas){
 			System.out.println(p.getCodProva()+" - "+p.getCodModalidade()+" - "+p.getNome()+" - "+p.getSexo());
@@ -225,15 +238,66 @@ public class Main {
 			}
 		}while(dt==null);
 		hora = utils.Util.hourParserString(dt);
-		
 		Serie serie = new Serie(codProva, etapa, data,hora, status);
-		SerieDao.createSerie(serie);
+		Dao.createSerie(serie);
 		
+	}
+	
+	public static AtletaHistorico insertMarcaAtletaHistorico(String sexo){
+		String line;
+		
+		System.out.println("Torneios 'EM EXECUCAO'");
+		ArrayList<Torneio> torneios = Dao.getAllRunningTorneio();
+		System.out.println("CODTORNEIO - NOME TORNEIO");
+		for(Torneio t : torneios){
+			System.out.println(t.getCodTorneio()+" - "+t.getNome());
+		}
+		do{
+			line = utils.Util.readConsole("Digite o Codigo do Torneio em execucao que ira competir:");
+		}while(!line.matches("^[1-9][0-9]*$"));
+		int codTorneio = Integer.parseInt(line);
+		
+		System.out.println("Torneios Relevantes");
+		torneios.clear();
+		torneios = Dao.getAllRelevantsTorneio();
+		System.out.println("CODTORNEIO - NOME TORNEIO");
+		for(Torneio t : torneios){
+			System.out.println(t.getCodTorneio()+" - "+t.getNome());
+		}
+		do{
+			line = utils.Util.readConsole("Digite o Codigo do Torneio relevante que voce participou:");
+		}while(!line.matches("^[1-9][0-9]*$"));
+		int codTorneioRelevante = Integer.parseInt(line);
+		
+		
+		System.out.println("Provas cadastradas para o torneio");
+		ArrayList<ProvaModalidade> provas = Dao.getAllProvaTorneio(codTorneio,sexo);
+		System.out.println("CODMODALIDADE - DESCRICAO - SEXO");
+		for(ProvaModalidade p : provas){
+			System.out.println(p.getCodModalidade()+" - "+p.getNome()+" - "+p.getSexo());
+		}
+		do{
+			line = utils.Util.readConsole("Digite o Codigo da modalidade cuja marca passada foi atingida:");
+		}while(!line.matches("^[1-9][0-9]*$"));
+		int codModalidade = Integer.parseInt(line);
+		
+		do{
+			line = utils.Util.readConsole("Digite a colocacao atingida no torneio passado :");
+		}while(!line.matches("^[1-9][0-9]*$"));
+		int colocacao = Integer.parseInt(line);
+		
+		do{
+			line = utils.Util.readConsole("Digite a marca atingida no torneio passado :");
+		}while(!line.matches("^(?:\\d{1,3}.)?\\d{0,5}$"));
+		float marca = Float.parseFloat(line);
+		
+		AtletaHistorico ah = new AtletaHistorico(codTorneioRelevante, codModalidade, marca, colocacao);
+		
+		return ah;		
 	}
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
 		
 		
 	}

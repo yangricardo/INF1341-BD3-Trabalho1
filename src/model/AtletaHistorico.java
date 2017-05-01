@@ -5,11 +5,19 @@ public class AtletaHistorico {
 	private int codAtleta;
 	private int codTorneio;
 	private int codModalidade;
-	private double marca;
+	private float marca;
 	private int colocacao;
 	private int nota;
 	
-	public AtletaHistorico(int codAtleta, int codTorneio, int codModalidade, double marca, int colocacao) {
+	public AtletaHistorico( int codTorneio, int codModalidade, float marca, int colocacao) {
+		super();
+		this.codTorneio = codTorneio;
+		this.codModalidade = codModalidade;
+		this.marca = marca;
+		this.colocacao = colocacao;
+	}
+	
+	public AtletaHistorico(int codAtleta, int codTorneio, int codModalidade, float marca, int colocacao) {
 		super();
 		this.codAtleta = codAtleta;
 		this.codTorneio = codTorneio;
@@ -17,7 +25,7 @@ public class AtletaHistorico {
 		this.marca = marca;
 		this.colocacao = colocacao;
 	}
-	public AtletaHistorico(int codAtleta, int codTorneio, int codModalidade, double marca, int colocacao, int nota) {
+	public AtletaHistorico(int codAtleta, int codTorneio, int codModalidade, float marca, int colocacao, int nota) {
 		super();
 		this.codAtleta = codAtleta;
 		this.codTorneio = codTorneio;
@@ -44,10 +52,10 @@ public class AtletaHistorico {
 	public void setCodModalidade(int codModalidade) {
 		this.codModalidade = codModalidade;
 	}
-	public double getMarca() {
+	public float getMarca() {
 		return marca;
 	}
-	public void setMarca(double marca) {
+	public void setMarca(float marca) {
 		this.marca = marca;
 	}
 	public int getColocacao() {
