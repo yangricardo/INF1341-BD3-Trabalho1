@@ -25,6 +25,19 @@ public class Serie {
 		this.setHora(hora);
 		this.status = status;
 	}
+	
+	
+	
+	public Serie(String etapa, String data, String status, String hora) {
+		super();
+		this.etapa = etapa;
+		this.data = data;
+		this.status = status;
+		this.hora = hora;
+	}
+	public Serie() {
+		super();
+	}
 	public int getCodSerie() {
 		return codSerie;
 	}
